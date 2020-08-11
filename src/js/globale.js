@@ -1,9 +1,12 @@
+/**
+ * Ce fichier doit être inclu dans toute les page HTML pour évider la duplication du code
+ */
+
 let cart = localStorage.cart ? JSON.parse(localStorage.cart) : [];
 
 const showCartLength = () => {
     const indicateurNbArticle = document.getElementById('nbArticles');
     cart = localStorage.cart ? JSON.parse(localStorage.cart) : [];
-    console.log(cart);
 
     if (indicateurNbArticle) {
         if (cart.length === 0) {
@@ -27,11 +30,15 @@ const getTotalArticles = () => {
 }
 
 const createElement = (tag, text, className) => {
-    var balise = document.createElement(tag);
-    balise.className = className;
-    var textbalise = document.createTextNode(text);
+    const balise = document.createElement(tag);
 
-    balise.appendChild(textbalise);
+    if (className) {
+        balise.className = className;
+    }
+
+    if (text) {
+        balise.innerHTML = text;
+    }
 
     return balise;
 }
@@ -62,5 +69,20 @@ const discuterAvecLapi = (url, method, body = {}) => {
         request.send(JSON.stringify(body));
     });
 };
+
+const getTotalPrice = () => {
+
+    let totalPrice = 0;
+
+    cart.forEach(article => {
+        totalPrice += (article.price * article.quantity);
+    });
+
+    return totalPrice;
+};
+
+const redirectHome = () => {
+    window.location.href = 'index.html';
+}
 
 showCartLength();
