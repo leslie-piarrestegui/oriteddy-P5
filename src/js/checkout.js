@@ -5,17 +5,20 @@ const email = document.getElementById('email');
 const address = document.getElementById('address');
 const city = document.getElementById('city');
 
+
+/**
+ * La fonction "CreeListePanier" permet d'afficher la liste d'articles du panier
+ */
 const CreeListePanier = () => {
     cart = localStorage.cart ? JSON.parse(localStorage.cart) : [];
-    console.log(cart);
     let innerHTML = '';
 
-    if (cart.length > 0) {
-        cart.forEach(article => {
+    if (cart.length > 0) { // si longueur du panier est suppérieur à 0 //
+        cart.forEach(article => { // Pour chaque article du panier modifier le DOM avec le nom, la couleur, la quantité...//
             innerHTML += `
                 <li class="list-group-item d-flex flex-column justify-content-between lh-condensed item-cart">
                     <div class="nom-article">
-                        <h6 class="my-0">${article.name}</h6>
+                        <h6 class="my-0">${article.name}</h6> 
                     </div>
                     <p class="text-muted">${article.color}</p>
                     <p class="text-muted">${article.quantity}</p>
@@ -37,27 +40,39 @@ const CreeListePanier = () => {
     document.getElementById("vignetteNbArticles").innerHTML = getTotalArticles();
 };
 
+/**
+ * 
+ * La fonction "updateList" permet de vider le localStorage 
+ */
 const updateList = (clearStorage = false) => {
     if (clearStorage) {
         localStorage.clear();
     }
 
-    document.location.reload(true);
+    document.location.reload(true); // recharger la page //
 };
 
+/**
+ * La fonction "isValidForm" permet de vérifier la validité du formulaire
+ */
 const isValidForm = () => firstName.checkValidity()
     && lastName.checkValidity()
     && email.checkValidity()
     && address.checkValidity()
     && city.checkValidity();
 
+/**
+ * Au clic sur le bouton de validation du formulaire la fonction "updateList" est appelé
+ */
 document.getElementById("supp").addEventListener("click", () => {
     updateList(true);
 });
 
+/**
+ * Cette fonction permet de validé la commande
+ */
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    console.log("validation de la commande");
 
     console.log(firstName.checkValidity());
     if (isValidForm()) {
@@ -72,19 +87,19 @@ form.addEventListener('submit', async (event) => {
             products: cart.map(article => article._id)
         };
 
-        try {
-            const result = await discuterAvecLapi(`http://localhost:3000/api/teddies/order`, "POST", body);
-            const commande = `commande-${result.orderId}`;
+        try { 
+            const result = await discuterAvecLapi(`http://localhost:3000/api/teddies/order`, "POST", body); // apel de fonction "discuterAvecLapi" avec l'URL de order //
+            const commande = `commande-${result.orderId}`; // recupère "orderId" pour la valoidation de la commande //
             result.totalPrice = getTotalPrice();
-            localStorage.setItem(commande, JSON.stringify(result));
+            localStorage.setItem(commande, JSON.stringify(result)); // ajout au localStorage //
             console.log(localStorage.getItem(commande));
-            localStorage.removeItem('cart');
-            window.location.href = `confirmation.html?order=${commande}`;
+            localStorage.removeItem('cart'); // Va supprimer la ressource avec le nom de clé correspondant du storage (cart).
+            window.location.href = `confirmation.html?order=${commande}`; // redirection vers la page "confirmation.html" //
 
-        } catch (err) {
-            console.error(err);
+        } catch {
+            redirectHome(); // redirige vers la page d'accueil si erreur //
         }
     }
 });
 
-CreeListePanier();
+CreeListePanier(); // Apel de la fonction "CreeListePanier" //

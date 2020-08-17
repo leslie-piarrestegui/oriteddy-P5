@@ -55,15 +55,15 @@ const getArticles = async (article) => {
 
 
 /**
- * Récupère l'element ave l'ID 'carte
+ * Récupère l'element avec l'ID carte
  * Change le contenu de l'Id 'carte' avec 'html' grace à .innerHtml 
  */
         document.getElementById('carte').innerHTML = html;
 /**
- * sinon affiche une erreur dans la console.
+ * sinon redirige vers la page d'accueil.
  */
-    } catch (err) {
-        console.error(err);
+    } catch {
+        redirectHome();
     }
 };
 
