@@ -8,7 +8,8 @@ let cart = localStorage.cart ? JSON.parse(localStorage.cart) : [];
 /**
  * La fonction "showCartLength" permet d'indiquer le nombres d'articles dans la panier
  */
-const showCartLength = () => {// récupère l'élément dont l'ID est "nbArticles"
+const showCartLength = () => { // récupère l'élément dont l'ID est "nbArticles" //
+    const indicateurNbArticle = document.getElementById('nbArticles');
     cart = localStorage.cart ? JSON.parse(localStorage.cart) : [];
 
     if (indicateurNbArticle) {
@@ -62,9 +63,9 @@ const discuterAvecLapi = (url, method, body = {}) => {
      * ou de reject le code http de la reponse API
      */
 
-     /**
-      * Permet de faire une requète à l'API et de la réutiliser dans les autres pages
-      */
+    /**
+     * Permet de faire une requète à l'API et de la réutiliser dans les autres pages
+     */
     return new Promise((resolve, reject) => {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('article');
@@ -86,7 +87,7 @@ const discuterAvecLapi = (url, method, body = {}) => {
 
 
 /**
- * Permet d'avoir le prix total
+ * Permet d'a> le prix total
  */
 const getTotalPrice = () => {
 
@@ -103,7 +104,7 @@ const getTotalPrice = () => {
 /**
  * Permet de faire une redirection vers la page d'accueil 
  */
-const redirectHome = () => { 
+const redirectHome = () => {
     window.location.href = 'index.html';
 }
 
